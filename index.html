@@ -3,43 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Changer</title>
+    <title>HTML to PDF Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <h1>Change URL Segments</h1>
+    <h1>HTML to PDF Converter123</h1>
     <form id="urlForm">
-        
         <label for="prefix">Select Prefix:</label>
         <select id="prefix" name="prefix">
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2072">2072</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2073">2073</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2074">2074</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2076">2076</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2077">2077</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2078">2078</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2079">2079</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2080">2080</option>
-            <!-- Add more options as needed -->
+            <!-- Options here -->
         </select>
-
         <label for="additionalPrefix">Select Additional Prefix:</label>
         <select id="additionalPrefix" name="additionalPrefix">
-            <option value="3">PCL/Diploma</option>
-            <option value="2">Pre-Diploma</option>
-            <!-- Add more options as needed -->
+            <!-- Options here -->
         </select>
-
         <label for="segment1">Symbol no</label>
         <input type="text" id="segment1" name="segment1" placeholder="Enter segment 1">
-
         <label for="segment2">DOB</label>
         <input type="text" id="segment2" name="segment2" placeholder="Enter segment 2">
-
-        <button type="submit">Check Result</button>
+        <button type="submit">Convert to PDF and Download</button>
     </form>
-
+    <div id="pdfContainer" style="display: none;">
+        <!-- This is where the content will be converted to PDF -->
+    </div>
     <script>
         document.getElementById("urlForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent the form from submitting normally
@@ -52,8 +38,26 @@
             // Combine the segments with the selected prefixes to form the new URL
             const newURL = `${prefix}/${additionalPrefix}/${segment1}/${segment2}`;
 
-            // Redirect to the new URL
-            window.location.href = newURL;
+            // This is where you can display content for conversion
+            const contentToConvert = `<h2>Your PDF Content</h2><p>${newURL}</p>`;
+
+            // Display the content for conversion
+            const pdfContainer = document.getElementById("pdfContainer");
+            pdfContainer.innerHTML = contentToConvert;
+
+            // Use html2pdf to convert the content to a PDF
+            const pdfOptions = {
+                margin: 10,
+                filename: 'downloaded_file.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(pdfContainer).set(pdfOptions).outputPdf(pdf => {
+                // Download the PDF
+                pdf.save('downloaded_file.pdf');
+            });
         });
     </script>
 </body>
