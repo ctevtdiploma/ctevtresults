@@ -7,10 +7,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <h1>HTML to PDF Converter123</h1>
+    <h1>HTML to PDF Converter</h1>
     <form id="urlForm">
         <label for="prefix">Select Prefix:</label>
         <select id="prefix" name="prefix">
+            <!-- Options here -->
             <option value="https://itms.ctevt.org.np/download-to-pdf/2072">2072</option>
             <option value="https://itms.ctevt.org.np/download-to-pdf/2073">2073</option>
             <option value="https://itms.ctevt.org.np/download-to-pdf/2074">2074</option>
@@ -24,9 +25,9 @@
         </select>
         <label for="additionalPrefix">Select Additional Prefix:</label>
         <select id="additionalPrefix" name="additionalPrefix">
+            <!-- Options here -->
             <option value="3">PCL/Diploma</option>
             <option value="2">Pre-Diploma</option>
-            <!-- Add more options as needed -->
         </select>
         <label for="segment1">Symbol no</label>
         <input type="text" id="segment1" name="segment1" placeholder="Enter segment 1">
@@ -34,9 +35,6 @@
         <input type="text" id="segment2" name="segment2" placeholder="Enter segment 2">
         <button type="submit">Convert to PDF and Download</button>
     </form>
-    <div id="pdfContainer" style="display: none;">
-        <!-- This is where the content will be converted to PDF -->
-    </div>
     <script>
         document.getElementById("urlForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent the form from submitting normally
@@ -49,14 +47,7 @@
             // Combine the segments with the selected prefixes to form the new URL
             const newURL = `${prefix}/${additionalPrefix}/${segment1}/${segment2}`;
 
-            // This is where you can display content for conversion
-            const contentToConvert = `<h2>Your PDF Content</h2><p>${newURL}</p>`;
-
-            // Display the content for conversion
-            const pdfContainer = document.getElementById("pdfContainer");
-            pdfContainer.innerHTML = contentToConvert;
-
-            // Use html2pdf to convert the content to a PDF
+            // Use html2pdf to convert the input content to a PDF
             const pdfOptions = {
                 margin: 10,
                 filename: 'downloaded_file.pdf',
@@ -65,9 +56,19 @@
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().from(pdfContainer).set(pdfOptions).outputPdf(pdf => {
-                // Download the PDF
-                pdf.save('downloaded_file.pdf');
+            const contentToConvert = `<h2>Your PDF Content</h2><p>${newURL}</p>`;
+
+            html2pdf().from(contentToConvert).set(pdfOptions).outputPdf(pdf => {
+                // Manually download the PDF
+                const blob = new Blob([pdf], { type: "application/pdf" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.style.display = "none";
+                a.href = url;
+                a.download = 'downloaded_file.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
             });
         });
     </script>
