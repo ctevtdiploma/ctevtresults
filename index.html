@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Changer</title>
+</head>
+<body>
+    <h1>Change URL Segments</h1>
+    <form id="urlForm">
+        
+        <label for="prefix">Select Prefix:</label>
+        <select id="prefix" name="prefix">
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2072">2072</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2073">2073</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2074">2074</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2076">2076</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2077">2077</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2078">2078</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2079">2079</option>
+            <option value="https://itms.ctevt.org.np/download-to-pdf/2080">2080</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="additionalPrefix">Select Additional Prefix:</label>
+        <select id="additionalPrefix" name="additionalPrefix">
+            <option value="3">PCL/Diploma</option>
+            <option value="2">Pre-Diploma</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="segment1">Symbol no</label>
+        <input type="text" id="segment1" name="segment1" placeholder="Enter segment 1">
+
+        <label for="segment2">DOB</label>
+        <input type="text" id="segment2" name="segment2" placeholder="Enter segment 2">
+
+        <button type="submit">Check Result</button>
+    </form>
+
+    <script>
+        document.getElementById("urlForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const prefix = document.getElementById("prefix").value;
+            const additionalPrefix = document.getElementById("additionalPrefix").value;
+            const segment1 = document.getElementById("segment1").value;
+            const segment2 = document.getElementById("segment2").value;
+
+            // Combine the segments with the selected prefixes to form the new URL
+            const newURL = `${prefix}/${additionalPrefix}/${segment1}/${segment2}`;
+
+            // Redirect to the new URL
+            window.location.href = newURL;
+        });
+    </script>
+</body>
+</html>
