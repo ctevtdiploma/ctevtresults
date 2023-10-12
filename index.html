@@ -1,76 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Downloader</title>
+    <title>Download Form</title>
 </head>
 
 <body>
-    <h1>Generate PDF</h1>
-    <form id="urlForm">
-        <label for="prefix">Select Prefix:</label>
-        <select id="prefix" name="prefix">
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2072">2072</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2073">2073</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2074">2074</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2075">2075</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2076">2076</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2077">2077</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2078">2078</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2079">2079</option>
-            <option value="https://itms.ctevt.org.np/download-to-pdf/2080">2080</option>
-            <!-- Add more options as needed -->
-        </select>
+    <form id="downloadForm">
+        <label for="year">Year:</label>
+        <input type="text" name="year" id="year" required><br>
 
-        <label for="additionalPrefix">Select Additional Prefix:</label>
-        <select id="additionalPrefix" name="additionalPrefix">
-            <option value="3">PCL/Diploma</option>
-            <option value="2">Pre-Diploma</option>
-            <!-- Add more options as needed -->
-        </select>
+        <label for="symbolNo">Symbol Number:</label>
+        <input type="text" name="symbolNo" id="symbolNo" required><br>
 
-        <label for="segment1">Symbol no</label>
-        <input type="text" id="segment1" name="segment1" placeholder="Enter segment 1">
+        <label for="dob">Date of Birth:</label>
+        <input type="text" name="dob" id="dob" required><br>
 
-        <label for="segment2">DOB</label>
-        <input type="text" id="segment2" name="segment2" placeholder="Enter segment 2">
-        <button type="submit">Generate PDF</button>
+        <button type="button" onclick="downloadFile()">Download</button>
     </form>
 
     <script>
-        document.getElementById("urlForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+        function downloadFile() {
+            const year = document.getElementById("year").value;
+            const symbolNo = document.getElementById("symbolNo").value;
+            const dob = document.getElementById("dob").value;
 
-            const prefix = document.getElementById("prefix").value;
-            const additionalPrefix = document.getElementById("additionalPrefix").value;
-            const segment1 = document.getElementById("segment1").value;
-            const segment2 = document.getElementById("segment2").value;
+            const url = `https://itms.ctevt.org.np/download-to-pdf/${year}/3/${symbolNo}/${dob}`;
 
-            const newURL = `${prefix}/${additionalPrefix}/${segment1}/${segment2}`;
-
-            // Send the data to the server
-            fetch('/generate-pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ url: newURL })
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(new Blob([blob]));
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'downloaded.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
-                .catch(error => console.error('Error:', error));
-        });
+            // Create an invisible link and trigger the download
+            const link = document.createElement("a");
+            link.href = url;
+            link.target = "_blank";
+            link.download = "downloaded_file.pdf";
+            link.click();
+        }
     </script>
 </body>
 
